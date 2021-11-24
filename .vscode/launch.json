@@ -1,0 +1,18 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch JavaPostgreApplication",
+            "request": "launch",
+            "preLaunchTask": "Clean install",
+            "mainClass": "com.vertace.javapostgre.JavaPostgreApplication",
+            "projectName": "java_postgres",
+            "args": "--spring.profiles.active=dev --spring-boot.run.fork=false",
+            "console": "internalConsole"
+        }
+    ]
+}
