@@ -1,0 +1,26 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /be/javapostgre
+spring:
+  application:
+    name: java_postgre
+  jpa:
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://dev-db.vertace.net:5432/training_dev
+    username: superadmin
+    password: Cibol@127
+    driverClassName: org.postgresql.Driver
+management:
+  endpoints:
+    web:
+      base-path: /
+      path-mapping.health: /actuator/health
