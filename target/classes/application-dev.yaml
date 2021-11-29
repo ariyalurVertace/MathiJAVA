@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
   servlet:
     context-path: /be/javapostgre
 spring:
@@ -15,9 +15,9 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
   datasource:
     platform: postgres
-    url: jdbc:postgresql://dev-db.vertace.net:5432/training_dev
-    username: superadmin
-    password: Cibol@127
+    url: jdbc:postgresql://94.237.78.111:5432/postgres
+    username: postgres
+    password: postgres123
     driverClassName: org.postgresql.Driver
 management:
   endpoints:

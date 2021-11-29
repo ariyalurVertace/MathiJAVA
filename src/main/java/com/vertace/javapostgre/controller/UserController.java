@@ -10,7 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController("/user")
+@RestController 
+@RequestMapping("/userProfile")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -40,8 +41,9 @@ public class UserController {
         userService.deleteUser(userId);
     }
     @GetMapping
-    public ResponseEntity<?> getUser(@RequestParam("userId") Long userId) throws Exception {
-        return ResponseEntity.ok(userService.getUser(userId));
+    public ResponseEntity<?> getUser(@RequestParam("id") Long id) throws Exception {
+        System.out.println(id);
+        return ResponseEntity.ok(userService.getUser(id));
     }
 
 }

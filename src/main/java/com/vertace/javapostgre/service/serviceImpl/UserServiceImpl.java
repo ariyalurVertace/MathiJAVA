@@ -1,9 +1,8 @@
 package com.vertace.javapostgre.service.serviceImpl;
 
 import com.vertace.javapostgre.commons.ModelMapperUtil;
-import com.vertace.javapostgre.entity.User;
+import com.vertace.javapostgre.entity.UserProfile;
 import com.vertace.javapostgre.exceptions.EmailIdAlreadyExistException;
-import com.vertace.javapostgre.exceptions.InvalidUserException;
 import com.vertace.javapostgre.exceptions.UserNameAlreadyExistException;
 import com.vertace.javapostgre.model.*;
 import com.vertace.javapostgre.repository.UserRepository;
@@ -14,7 +13,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -36,22 +34,22 @@ public class UserServiceImpl implements UserService {
         if (userModel.getPassword() == null || userModel.getPassword().isEmpty()) {
             throw new Exception("Password is required");
         }
-        User user = modelMapperUtil.convertToObject(userModel, User.class);
-        user.setPassword(new BCryptPasswordEncoder().encode(userModel.getPassword()));
-        userRepository.save(user);
-        //emailService.triggerCreateUserMail(user);
-        return modelMapperUtil.convertToObject(user, UserModel.class);
+        UserProfile userProfile = modelMapperUtil.convertToObject(userModel, UserProfile.class);
+        userProfile.setPassword(userModel.getPassword());
+        userRepository.save(userProfile);
+        //emailService.triggerCreateUserMail(userProfile);
+        return modelMapperUtil.convertToObject(userProfile, UserModel.class);
     }
 
     private void checkIfUserNameUnique(String userName, Long userId) throws UserNameAlreadyExistException {
-        User userByUserName = userRepository.findByUserName(userName);
+        UserProfile userByUserName = userRepository.findByUserName(userName);
         if (userByUserName != null && !userByUserName.getId().equals(userId)) {
-            throw new UserNameAlreadyExistException("User Name already exist");
+            throw new UserNameAlreadyExistException("UserProfile Name already exist");
         }
     }
 
     private void checkIfEmailUnique(String email, Long userId) throws EmailIdAlreadyExistException {
-        User userByEmail = userRepository.findByEmail(email);
+        UserProfile userByEmail = userRepository.findByEmail(email);
         if (userByEmail == null) {
             return;
         }
@@ -63,7 +61,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public GenericDataPagedResponse listUsers(CustomPageable pageable) {
         Pageable pageAble = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
-        Page<User> allUsers = userRepository.findAll(pageAble);
+        System.out.println(pageAble);
+
+        Page<UserProfile> allUsers = userRepository.findAll(pageAble);
+        System.out.println(allUsers);
         GenericDataPagedResponse getUserResponse = new GenericDataPagedResponse();
         List<UserModel> userModels = modelMapperUtil.convertToList(allUsers.getContent(), UserModel.class);
         if (!userModels.isEmpty())
@@ -75,15 +76,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ApiResponse updateUser(UserModel userModel) throws EmailIdAlreadyExistException, UserNameAlreadyExistException {
-        Optional<User> user = userRepository.findById(userModel.getId());
-        if (user.isPresent()) {
-            User userObj = user.get();
+        Optional<UserProfile> userProfile = userRepository.findById(userModel.getId());
+        if (userProfile.isPresent()) {
+            UserProfile userObj = userProfile.get();
             if (userModel.getEmail() != null) {
-                checkIfEmailUnique(userModel.getEmail(), user.get().getId());
+                checkIfEmailUnique(userModel.getEmail(), userProfile.get().getId());
             }
-            if (userModel.getUserName() != null) {
-                checkIfUserNameUnique(userModel.getUserName(), user.get().getId());
-            }
+            // if (userModel.getUserName() != null) {
+            //     checkIfUserNameUnique(userModel.getUserName(), userProfile.get().getId());
+            // }
             if (userModel.getFirstName() != null)
                 userObj.setFirstName(userModel.getFirstName());
             if (userModel.getLastName() != null)
@@ -101,7 +102,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUser(Long userId) throws Exception {
-        return userRepository.findById(userId).orElseThrow(() -> new Exception("Invalid UserId"));
+    public UserProfile getUser(Long id) throws Exception {
+        System.out.println(id);
+        return userRepository.findById(id).orElseThrow(() -> new Exception("Invalid UserId"));
     }
 }

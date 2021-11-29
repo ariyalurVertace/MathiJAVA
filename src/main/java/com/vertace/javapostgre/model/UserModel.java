@@ -30,4 +30,8 @@ public class UserModel {
 
     private boolean status;
 
+    private String fullName;
+    public void setFullName(){
+        this.fullName = this.firstName + " " + this.lastName;
+    }
 }
