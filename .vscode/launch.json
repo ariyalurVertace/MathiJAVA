@@ -10,7 +10,11 @@
             "request": "launch",
             "preLaunchTask": "Clean install",
             "mainClass": "com.vertace.javapostgre.JavaPostgreApplication",
+<<<<<<< HEAD
             "projectName": "vertace_javapostgre",
+=======
+            "projectName": "java_postgres",
+>>>>>>> 512e1044181e6dff30ab2b8d1ecd0d117c2eb8d1
             "args": "--spring.profiles.active=dev --spring-boot.run.fork=false",
             "console": "internalConsole"
         }
