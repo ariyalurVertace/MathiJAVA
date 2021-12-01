@@ -3,7 +3,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.lang.Thread.State;
+import java.util.Set;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -14,16 +14,18 @@ import org.hibernate.annotations.ColumnDefault;
 @NoArgsConstructor
 @Data
 @Entity
+// @Table (name="State", schema="State")
 public class District {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String Name;
+    private String name;
     @Access(AccessType.PROPERTY)
     @ManyToOne(cascade = CascadeType.ALL)
     private State state;
     @NotNull
-    @ColumnDefault("false") 
-    private boolean isDeleted = false;
+    @ColumnDefault("false")
+    private Boolean isDeleted = false;
 
 }
