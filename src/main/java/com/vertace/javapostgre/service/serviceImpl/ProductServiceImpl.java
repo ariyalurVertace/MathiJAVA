@@ -2,10 +2,12 @@ package com.vertace.javapostgre.service.serviceImpl;
 
 import com.vertace.javapostgre.commons.ModelMapperUtil;
 import com.vertace.javapostgre.entity.Product;
-//import com.vertace.javapostgre.entity.District;
+import com.vertace.javapostgre.entity.Category;
+import com.vertace.javapostgre.entity.SellerProfile;
 import com.vertace.javapostgre.model.*;
 import com.vertace.javapostgre.repository.ProductRepository;
-//import com.vertace.javapostgre.repository.DistrictRepository;
+import com.vertace.javapostgre.repository.CategoryRepository;
+import com.vertace.javapostgre.repository.SellerProfileRepository;
 import com.vertace.javapostgre.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,23 +25,25 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService{
     private final ProductRepository productRepository;
-    //private final DistrictRepository districtRepository;
+    private final CategoryRepository categoryRepository;
+    private final SellerProfileRepository sellerProfileRepository;
     private final ModelMapperUtil modelMapperUtil = ModelMapperUtil.getInstance();
     private final JdbcTemplate jdbcTemplate;
 
     @Override
     public ProductModel createProduct(ProductModel productModel) throws Exception {
-        //Long categoryId = productModel.getCategory().getId();
-        //District district = districtRepository.findById(districtId).orElseThrow(() -> new Exception("Invalid DistrictId"));
-        Product product=modelMapperUtil.convertToObject(productModel, Product.class);
-        //address.setDistrict(district);
-        productRepository.save(product);
+    Long categoryId = productModel.getCategory().getId();
+    Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new Exception("Invalid CategoryId"));
+    SellerProfile sellerProfile = sellerProfileRepository.findById(SellerProfileId).orElseThrow(() -> new Exception("Invalid SellerProfileId"));
+    Product product=modelMapperUtil.convertToObject(productModel, Product.class);
+    product.setProduct(product);
+    productRepository.save(product);
         //emailService.triggerCreateAddressMail(address);
         return modelMapperUtil.convertToObject(product, ProductModel.class);
     }
 
     @Override
-    public GenericDataPagedResponse listProduct(CustomPageable pageable) {
+    public GenericDataPagedResponse listProducts(CustomPageable pageable) {
         Pageable pageAble = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
         System.out.println(pageAble);
 

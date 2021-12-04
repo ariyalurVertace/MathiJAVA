@@ -4,14 +4,9 @@ package com.vertace.javapostgre.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-
 import org.hibernate.annotations.ColumnDefault;
-
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,7 +14,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 // @Table (name="State", schema="State")
 public class Product {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,12 +24,11 @@ public class Product {
     private String Description;
     @Access(AccessType.PROPERTY)
     @ManyToOne(cascade = CascadeType.ALL)
-    //private Category category;
-    
-    //private Seller seller;
+    private Category category;
+    private SellerProfile sellerProfile;
     @NotNull
     @ColumnDefault("false")
-    private Boolean isDeleted = false;
+    private Boolean isDeleted;
 
 }
 
